@@ -1,5 +1,5 @@
 -r ../requirements.txt
 flake8
-hypothesis
-pytest
+hypothesis>=6.113.0
+pytest==9.1.1
 pytest-cov
