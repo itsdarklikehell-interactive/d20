@@ -221,7 +221,10 @@ class Roller:
 
     def _parse_with_comments(self, expr: str) -> ast.Expression:
         try:
-            return ast.comment_parser.parse(expr, start="commented_expr")
+            result = ast.comment_parser.parse(expr, start="commented_expr")
+            if result.comment is not None:
+                result.comment = result.comment.strip()
+            return result
         except lark.UnexpectedInput as ui:
             # if the statement up to the unexpected token ends with an operator, remove that from the end
             successful_fragment = expr[: ui.pos_in_stream]
@@ -234,7 +237,7 @@ class Roller:
                 raise
             # and parse again (handles edge cases like "1d20 keep the dragon grappled")
             result = ast.comment_parser.parse(successful_fragment, start="commented_expr")
-            result.comment = force_comment
+            result.comment = force_comment.strip()
             return result
 
     # evaluator
