@@ -441,13 +441,14 @@ class Dice(Node):  # diceexpr
 
 with open(os.path.join(os.path.dirname(__file__), "grammar.lark")) as f:
     grammar = f.read()
-parser = Lark(
-    grammar, start=["expr", "commented_expr"], parser="lalr", transformer=RollTransformer(), maybe_placeholders=True
+parser = Lark(grammar, start="expr", parser="lalr", transformer=RollTransformer(), maybe_placeholders=True)
+comment_parser = Lark(
+    grammar, start="commented_expr", parser="lalr", transformer=RollTransformer(), maybe_placeholders=True
 )
 
 if __name__ == "__main__":
     while True:
-        parser = Lark(grammar, start=["expr", "commented_expr"], parser="lalr", maybe_placeholders=True)
+        parser = Lark(grammar, start="expr", parser="lalr", maybe_placeholders=True)
         result = parser.parse(input(), start="expr")
         print(result.pretty())
         print(result)
